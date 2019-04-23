@@ -14,8 +14,15 @@
 
       <div class="logo"> <img src="src/img/select.svg"/> <span>YoloLA</span></div>
 
-      <div class="load-image-list">
+      <div class="tool-bar">
         <button class="topcoat-button" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;">Load Images</button>
+        <hr>
+        <h4><span class="percentageForValidation-show">20%</span> for validation</h4>
+        <input type="range" class="topcoat-range" min="0" max="50" value="20" style="margin-left: 10px; margin-top: 6px; width: calc(100% - 20px);" id="train-validation-percentage">        
+      </div>
+
+      <div class="save-box">
+        <button class="topcoat-button--cta" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;">Export</button>
       </div>
 
     </div>
@@ -31,9 +38,21 @@
     <script>if (window.module) module = window.module;</script>
     <script type="text/javascript">
       $(function() {
+
+        let percentageForValidation = 20;
+
+        // RESIZE LEFT PANEL
         $(".left-panel").resizable({
             handles: 'e, w'
         });
+
+        // EVENT CHANGE PERCENTAGE OF TRAINING/VALIDATION
+        $('#train-validation-percentage').on("change mousemove", function(e) {
+          percentageForValidation = $(this).val();
+          $('.percentageForValidation-show').html(percentageForValidation+'%');
+        });
+
+
       });
     </script>
   </body>
