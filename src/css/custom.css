@@ -38,3 +38,12 @@ body {
     font-size: 20px;
     padding-left: 0;
 }
+
+
+.load-image-list {
+	width: 100%;
+    height: calc(50% - 70px );
+    border-top: solid 3px #131313;
+    border-bottom: solid 3px #131313;
+    margin-top: 60px;
+}
