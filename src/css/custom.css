@@ -12,3 +12,29 @@ body {
 	top:0;
 	left:0;
 }
+
+.left-panel .logo {
+    text-align: center;
+    position: absolute;
+    width: 143px;
+    overflow: hidden;
+    height: 45px;    left: calc( 50% - (143px/2) );
+    top:10px;
+}
+
+.logo img {
+    width: 30px;
+    padding: 10px;
+    float: left;
+    padding-right: 0px;
+}
+
+.logo span {
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: bolder;
+    float: right;
+    padding: 10px;
+    font-size: 20px;
+    padding-left: 0;
+}
