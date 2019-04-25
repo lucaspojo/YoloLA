@@ -54,7 +54,43 @@
         $(window).bind('resize', function(e) {
             let body_width = $(document).width();
             let this_width = $('.left-panel').width();
+
             $('.right-panel').css({'width':body_width - this_width + 'px'})
+
+
+
+
+            let viewer_height = $('.image-viewer').height();
+            let viewer_width = $('.image-viewer').width();
+
+            //$('.image-viewer img').css({'max-height':viewer_height + 'px', 'max-width':viewer_width + 'px'})
+
+            var maxWidth = viewer_width; // Max width for the image
+            var maxHeight = viewer_height;    // Max height for the image
+            var ratio = 0;  // Used for aspect ratio
+            var width = $(this).width();    // Current image width
+            var height = $(this).height();  // Current image height
+
+            // Check if the current width is larger than the max
+            if(width > maxWidth){
+                ratio = maxWidth / width;   // get ratio for scaling image
+                $(this).css("width", maxWidth); // Set new width
+                $(this).css("height", height * ratio);  // Scale height based on ratio
+                height = height * ratio;    // Reset height to match scaled image
+                width = width * ratio;    // Reset width to match scaled image
+                console.log('1');
+            }
+
+            // Check if current height is larger than max
+            if(height > maxHeight){
+                ratio = maxHeight / height; // get ratio for scaling image
+                $(this).css("height", maxHeight);   // Set new height
+                $(this).css("width", width * ratio);    // Scale width based on ratio
+                width = width * ratio;    // Reset width to match scaled image
+                console.log('2');
+            }
+
+
         });
 
         // SHOW CROSSHAIR
@@ -63,8 +99,6 @@
             var parentOffset = $(this).parent().offset();
             var mx = e.pageX - parentOffset.left;
             var my = e.pageY - parentOffset.top;
-
-            console.log(mx, my);
             
             $('#x-line').css({'top':my+'px'});
             $('#y-line').css({'left':mx+'px'});
