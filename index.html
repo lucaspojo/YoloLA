@@ -12,18 +12,22 @@
 
     <div class="left-panel">
 
-      <div class="logo"> <img src="src/img/select.svg"/> <span>YoloLA</span></div>
+        <div class="logo"> <img src="src/img/select.svg"/> <span>YoloLA</span></div>
 
-      <div class="tool-bar">
-        <button class="topcoat-button" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;" id="btn-load-img">Load Images [png/jpg]</button>
-        <hr>
-        <h4><span class="percentageForValidation-show">20%</span> for validation</h4>
-        <input type="range" class="topcoat-range" min="0" max="50" value="20" style="margin-left: 10px; margin-top: 6px; width: calc(100% - 20px);" id="train-validation-percentage">        
-      </div>
+        <div class="tool-bar">
+            <button class="topcoat-button" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;" id="btn-load-img">Load Images [png/jpg]</button>
+            <hr>
+            <h4><span class="percentageForValidation-show">20%</span> for validation</h4>
+            <input type="range" class="topcoat-range" min="0" max="50" value="20" style="margin-left: 10px; margin-top: 6px; width: calc(100% - 20px);" id="train-validation-percentage">        
+        </div>
+      
+        <div class="panel_filelist">
 
-      <div class="save-box">
-        <button class="topcoat-button--cta" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;">Export</button>
-      </div>
+        </div>
+
+        <div class="save-box">
+            <button class="topcoat-button--cta" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;">Export</button>
+        </div>
 
     </div>
 
@@ -43,7 +47,8 @@
       $(function() {
 
 
-        let percentageForValidation = 20;
+          let percentageForValidation = 20;
+          let global_imageList = null;
 
 
         // RESIZE LEFT PANEL
@@ -54,14 +59,29 @@
 
         // EVENT CHANGE PERCENTAGE OF TRAINING/VALIDATION
         $('#train-validation-percentage').on("change mousemove", function(e) {
-          percentageForValidation = $(this).val();
-          $('.percentageForValidation-show').html(percentageForValidation+'%');
+            percentageForValidation = $(this).val();
+            $('.percentageForValidation-show').html(percentageForValidation+'%');
         });
 
 
         // LOAD IMAGES
         $(document).on("click", '#btn-load-img', function(event) { 
-          $( "#input_load-img" ).trigger( "click" );
+            $( "#input_load-img" ).trigger( "click" );
+        });
+
+
+        $("#input_load-img").change(function () {
+
+            // reset
+            global_imageList = null;
+            $('.panel_filelist').html(' ');
+
+
+            var files = $(this).prop("files")
+            var filesList = $.map(files, function (val) { return { 'path': val.path, 'name': val.name }; });
+            for (k in filesList) {
+                $('.panel_filelist').append('<li> <span class="dot gray"></span> ' + filesList[k].name + '</li>');
+            }
         });
 
 
