@@ -11,24 +11,26 @@
   <body>
 
     <div class="left-panel">
-
         <div class="logo"> <img src="src/img/select.svg"/> <span>YoloLA</span></div>
-
         <div class="tool-bar">
             <button class="topcoat-button" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;" id="btn-load-img">Load Images [png/jpg]</button>
             <hr>
             <h4><span class="percentageForValidation-show">20%</span> for validation</h4>
             <input type="range" class="topcoat-range" min="0" max="50" value="20" style="margin-left: 10px; margin-top: 6px; width: calc(100% - 20px);" id="train-validation-percentage">        
         </div>
-      
         <div class="panel_filelist">
-
         </div>
-
         <div class="save-box">
             <button class="topcoat-button--cta" style="margin: 7px; width: calc(100% - 14px); cursor: pointer;">Export</button>
         </div>
+    </div>
 
+    <div class="right-panel">
+        <div class="image-viewer">
+            <img src=""/>
+            <div id="x-line"></div>
+            <div id="y-line"></div>
+        </div>
     </div>
 
 
@@ -46,44 +48,28 @@
     <script type="text/javascript">
       $(function() {
 
-
-          let percentageForValidation = 20;
-          let global_imageList = null;
-
-
         // RESIZE LEFT PANEL
-        $(".left-panel").resizable({
-            handles: 'e, w'
+        $(".left-panel").resizable();
+        // RESIZE RIGHT PANEL
+        $(window).bind('resize', function(e) {
+            let body_width = $(document).width();
+            let this_width = $('.left-panel').width();
+            $('.right-panel').css({'width':body_width - this_width + 'px'})
         });
 
+        // SHOW CROSSHAIR
+        $(".image-viewer").mousemove(function(e) {
 
-        // EVENT CHANGE PERCENTAGE OF TRAINING/VALIDATION
-        $('#train-validation-percentage').on("change mousemove", function(e) {
-            percentageForValidation = $(this).val();
-            $('.percentageForValidation-show').html(percentageForValidation+'%');
+            var parentOffset = $(this).parent().offset();
+            var mx = e.pageX - parentOffset.left;
+            var my = e.pageY - parentOffset.top;
+
+            console.log(mx, my);
+            
+            $('#x-line').css({'top':my+'px'});
+            $('#y-line').css({'left':mx+'px'});
+
         });
-
-
-        // LOAD IMAGES
-        $(document).on("click", '#btn-load-img', function(event) { 
-            $( "#input_load-img" ).trigger( "click" );
-        });
-
-
-        $("#input_load-img").change(function () {
-
-            // reset
-            global_imageList = null;
-            $('.panel_filelist').html(' ');
-
-
-            var files = $(this).prop("files")
-            var filesList = $.map(files, function (val) { return { 'path': val.path, 'name': val.name }; });
-            for (k in filesList) {
-                $('.panel_filelist').append('<li> <span class="dot gray"></span> ' + filesList[k].name + '</li>');
-            }
-        });
-
 
       });
     </script>

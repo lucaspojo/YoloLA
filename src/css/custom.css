@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,600i,700');
 
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
 body {
 	background:#131313;
 	font-family: 'Source Sans Pro', sans-serif;
@@ -20,6 +30,15 @@ hr {
 	position: fixed;
 	top:0;
 	left:0;
+}
+
+.right-panel {
+    width:calc(100% - 280px);
+    background:orange;
+    height: 100%;
+    position: fixed;
+    top:0;
+    right:0;
 }
 
 .left-panel .logo {
@@ -95,6 +114,11 @@ h4 {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.panel_filelist li:hover {
+    background:rgba(162, 162, 162, 0.13);
 }
 
 .panel_filelist li .dot {
@@ -119,6 +143,34 @@ h4 {
 .panel_filelist li .green {
     background:green;
 }
+
+
+.right-panel .image-viewer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    background: white;
+}
+
+
+#x-line {
+    position: absolute;
+    width:100%;
+    height: 1px;
+    background:black;
+    z-index: 5000;
+}
+
+#y-line {
+    position: absolute;
+    width:1px;
+    height: 100%;
+    background:black;
+    z-index: 5000;
+    top: 0;
+}
+
 
 
 /* SCROLL CUSTOM*/
