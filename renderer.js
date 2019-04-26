@@ -19,6 +19,7 @@ let percentageForValidation = 20;
 let global_imageList = null;
 let global_imgInfo = [];
 let currentImgSize = null;
+let currentImageID = null;
 
 let global_imgArea = [];
 
@@ -36,12 +37,14 @@ function initDraw() {
        .css({'background':'red'});
 
 
+
+
     function setMousePosition(e) {
         var offset = $('#canvas').offset();
         var mouse_mx = parseInt(e.pageX - offset.left);
         var mouse_my = parseInt(e.pageY - offset.top);
 
-        console.log(mouse_mx, mouse_my);
+        //console.log(mouse_mx, mouse_my);
         
         ctx.beginPath();
         ctx.arc(mouse_mx, mouse_my, 10, 0, 2 * Math.PI);
@@ -49,16 +52,71 @@ function initDraw() {
     }
 
 
+
+
     canvas.onmousemove = function (e) {
         setMousePosition(e);
     }
 
+
+
+    let global_rectangle_start = null;
+    let global_rectangle_end = null;
+
+    canvas.onclick = function (e) {
+        var offset = $('#canvas').offset();
+        var mouse_mx = parseInt(e.pageX - offset.left);
+        var mouse_my = parseInt(e.pageY - offset.top);
+
+        if(global_rectangle_start == null) {
+        	global_rectangle_start = { x:mouse_mx, y:mouse_my };
+        } else {
+        	global_rectangle_end = { x:mouse_mx, y:mouse_my };
+
+
+
+        	global_imgArea.push({
+        		'p1': global_rectangle_start,
+        		'p2': global_rectangle_end,
+        		'imgID': currentImageID
+        	})
+
+
+        	//DO SOMTHING
+        	console.log('DRAW RECTANGLE, ', global_rectangle_start, global_rectangle_end);
+
+
+        	//CLEAR VAR
+        	global_rectangle_start = null;
+    		global_rectangle_end = null;
+        }
+    }
+
+
     setInterval(function(){
+
         let img_height = $('.image-viewer img').height();
         let img_width = $('.image-viewer img').width();
+
         ctx.canvas.height = img_height;
         ctx.canvas.width = img_width;
+
+        for(k in global_imgArea) {
+        	
+        	if(global_imgArea[k].imgID == currentImageID) {
+        		console.log(global_imgArea[k].p1, global_imgArea[k].p2)
+        		ctx.rect(global_imgArea[k].p1.x, global_imgArea[k].p1.y, 150, 100);	
+        	} else {
+        		console.log('NOOO');
+        	}
+
+        	
+        }
+
+        ctx.stroke();
+
     }, 100);
+
 
 }
 
@@ -103,5 +161,5 @@ $(document).on("click", '.panel_filelist li', function(event) {
 
 	currentImgSize = { width:$('.right-panel .image-viewer img').width(), height:$('.right-panel .image-viewer img').height() }
 
-	console.log(img.path);
+	currentImageID = imgID;
 });
