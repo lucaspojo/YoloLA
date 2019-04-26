@@ -18,6 +18,49 @@ function makeid(length) {
 let percentageForValidation = 20;
 let global_imageList = null;
 let global_imgInfo = [];
+let currentImgSize = null;
+
+let global_imgArea = [];
+
+
+initDraw();
+function initDraw() {
+
+    this.element = document.createElement('canvas');
+    this.ctx = this.element.getContext("2d");
+
+    $(this.element)
+       .attr('id', 'canvas')
+       .text('unsupported browser')
+       .appendTo('.image-viewer')
+       .css({'background':'red'});
+
+
+    function setMousePosition(e) {
+        var offset = $('#canvas').offset();
+        var mouse_mx = parseInt(e.pageX - offset.left);
+        var mouse_my = parseInt(e.pageY - offset.top);
+
+        console.log(mouse_mx, mouse_my);
+        
+        ctx.beginPath();
+        ctx.arc(mouse_mx, mouse_my, 10, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
+
+    canvas.onmousemove = function (e) {
+        setMousePosition(e);
+    }
+
+    setInterval(function(){
+        let img_height = $('.image-viewer img').height();
+        let img_width = $('.image-viewer img').width();
+        ctx.canvas.height = img_height;
+        ctx.canvas.width = img_width;
+    }, 100);
+
+}
 
 
 // EVENT CHANGE PERCENTAGE OF TRAINING/VALIDATION
@@ -57,5 +100,8 @@ $(document).on("click", '.panel_filelist li', function(event) {
 	let imgID = $( this ).attr( "id" );
 	let img = global_imgInfo[imgID];
 	$('.right-panel .image-viewer img').attr("src" , img.path);
+
+	currentImgSize = { width:$('.right-panel .image-viewer img').width(), height:$('.right-panel .image-viewer img').height() }
+
 	console.log(img.path);
 });

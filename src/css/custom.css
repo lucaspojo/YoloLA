@@ -151,10 +151,11 @@ h4 {
     height: 100%;
     bottom: 0;
     background: white;
+    text-align: center;
 }
 
 .right-panel .image-viewer img {
-    width:100%;
+    /*width:100%;*/
 }
 
 
@@ -173,6 +174,17 @@ h4 {
     background:black;
     z-index: 5000;
     top: 0;
+}
+
+#canvas {
+    position: absolute;
+    background:black;
+    opacity: 0.5;
+}
+
+.rectangle {
+    border: 1px solid #FF0000;
+    position: absolute;
 }
 
 

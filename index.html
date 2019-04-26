@@ -26,8 +26,10 @@
     </div>
 
     <div class="right-panel">
+
         <div class="image-viewer">
-            <img src=""/>
+            <img src=""></img>
+            
             <div id="x-line"></div>
             <div id="y-line"></div>
         </div>
@@ -48,62 +50,136 @@
     <script type="text/javascript">
       $(function() {
 
+
+
+        
+
+
+
         // RESIZE LEFT PANEL
         $(".left-panel").resizable();
         // RESIZE RIGHT PANEL
+
         $(window).bind('resize', function(e) {
+            whenResize()
+        });
+
+        $('.image-viewer img').on('load', function () {
+            whenResize()
+            lockCanvas()
+            setTimeout(function() {
+                whenResize()
+                lockCanvas()
+            }, 100);
+        });
+
+
+        function whenResize() {
             let body_width = $(document).width();
             let this_width = $('.left-panel').width();
 
             $('.right-panel').css({'width':body_width - this_width + 'px'})
 
-
-
-
             let viewer_height = $('.image-viewer').height();
             let viewer_width = $('.image-viewer').width();
 
-            //$('.image-viewer img').css({'max-height':viewer_height + 'px', 'max-width':viewer_width + 'px'})
+            let img_height = $('.image-viewer img').height();
+            let img_width = $('.image-viewer img').width();
 
-            var maxWidth = viewer_width; // Max width for the image
-            var maxHeight = viewer_height;    // Max height for the image
-            var ratio = 0;  // Used for aspect ratio
-            var width = $(this).width();    // Current image width
-            var height = $(this).height();  // Current image height
+            $('.image-viewer img').css({'margin-top': (viewer_height / 2) - (img_height / 2) });
 
-            // Check if the current width is larger than the max
-            if(width > maxWidth){
-                ratio = maxWidth / width;   // get ratio for scaling image
-                $(this).css("width", maxWidth); // Set new width
-                $(this).css("height", height * ratio);  // Scale height based on ratio
-                height = height * ratio;    // Reset height to match scaled image
-                width = width * ratio;    // Reset width to match scaled image
-                console.log('1');
+            if(img_width > img_height) {
+                if(img_height < viewer_height) {
+                    $('.image-viewer img').css({'width':'100%'});
+                } else {
+                    if(img_width > viewer_width ) {
+                        $('.image-viewer img').css({'width':'100%', 'height':'auto'});
+                    } else {
+                        $('.image-viewer img').css({'width':'auto', 'height':'100%'});
+                    }
+                }
+
+            } else if(img_height > img_width) {
+
+                $('.image-viewer img').css({'height':'100%', 'width':'auto'});
+
+            } else if(img_width == img_height) {
+                $('.image-viewer img').css({'height':'100%', 'width':'100%'});
             }
 
-            // Check if current height is larger than max
-            if(height > maxHeight){
-                ratio = maxHeight / height; // get ratio for scaling image
-                $(this).css("height", maxHeight);   // Set new height
-                $(this).css("width", width * ratio);    // Scale width based on ratio
-                width = width * ratio;    // Reset width to match scaled image
-                console.log('2');
-            }
+            lockCanvas()
+        }
 
+        function lockCanvas() {
+            let viewer_height = $('.image-viewer').height();
+            let viewer_width = $('.image-viewer').width();
 
-        });
+            let img_height = $('.image-viewer img').height();
+            let img_width = $('.image-viewer img').width();
+            let img_pos = $('.image-viewer img').position();
+            let img_mtop = parseFloat($('.image-viewer img').css("margin-top"));
+
+            console.log(img_mtop);
+
+            $('#canvas').css({ 'width':img_width+'px', 'height':img_height+'px', 'top':img_mtop+'px', 'left':img_pos.left+'px'})
+        }
+
 
         // SHOW CROSSHAIR
-        $(".image-viewer").mousemove(function(e) {
-
-            var parentOffset = $(this).parent().offset();
-            var mx = e.pageX - parentOffset.left;
-            var my = e.pageY - parentOffset.top;
-            
+        $(".image-viewer img").mousemove(function(e) {
+            var parentOffset = $('.image-viewer').parent().offset();
+            var mx = e.pageX - parentOffset.left - 2;
+            var my = e.pageY - parentOffset.top - 2;
             $('#x-line').css({'top':my+'px'});
             $('#y-line').css({'left':mx+'px'});
-
+            var offset = $(this).offset();
+            var mouse_mx = parseInt(e.pageX - offset.left);
+            var mouse_my = parseInt(e.pageY - offset.top);
+            //console.log(mouse_mx, mouse_mx)
         });
+
+
+        let global_rectangle_start = null;
+        let global_rectangle_end = null;
+
+        // DRAW RECTANGLE
+        /*$(document).on("click", '.image-viewer img', function(e) { 
+
+            // VRAIS POSITION A ENREGISTRE
+            var offset = $(this).offset();
+            var mouse_mx = parseInt(e.pageX - offset.left);
+            var mouse_my = parseInt(e.pageY - offset.top);
+            
+
+            var parentOffset = $('.image-viewer img').parent().offset();
+            var mx = e.pageX - parentOffset.left;
+            var my = e.pageY - parentOffset.top;
+
+            if(global_rectangle_start == null) {
+                global_rectangle_start = {x:mx, y:my}
+            } else {
+                global_rectangle_end = {x:mx, y:my};
+
+                // traitement des position
+                console.log(global_rectangle_start, global_rectangle_end);
+                drawRectangle(global_rectangle_start, global_rectangle_end);
+
+                // Mise a zero 
+                global_rectangle_start = null;
+                global_rectangle_end = null;
+            }
+
+            if(global_rectangle_start == null) {
+                global_rectangle_start = {x:mouse_mx, y:mouse_my}
+            }
+
+            console.log(mouse_mx, mouse_my);
+
+        });*/
+
+
+
+
 
       });
     </script>
