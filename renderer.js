@@ -2,6 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 let $ = require("jquery");
+var sizeOf = require('image-size');
 
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 function makeid(length) {
@@ -64,26 +65,51 @@ function initDraw() {
     let global_rectangle_end = null;
 
     canvas.onclick = function (e) {
+
+    	let img_height = $('.image-viewer img').height();
+        let img_width = $('.image-viewer img').width();
+
+        let difRatio = img_width / currentImgSize.width;
+
         var offset = $('#canvas').offset();
         var mouse_mx = parseInt(e.pageX - offset.left);
         var mouse_my = parseInt(e.pageY - offset.top);
+
+
+
+
+
 
         if(global_rectangle_start == null) {
         	global_rectangle_start = { x:mouse_mx, y:mouse_my };
         } else {
         	global_rectangle_end = { x:mouse_mx, y:mouse_my };
 
+        	
+
+        	console.log(difRatio);
+
+        	let absolute_area_width = global_rectangle_end.x - global_rectangle_start.x;
+	        let absolute_area_height = global_rectangle_end.y - global_rectangle_start.y;
+
+	        let area_width = parseFloat(((absolute_area_width / currentImgSize.width ) / difRatio).toFixed(6));
+	        let area_height = parseFloat(((absolute_area_height / currentImgSize.height ) / difRatio).toFixed(6));
+
+	        let yolo_x = parseFloat((( (global_rectangle_start.x - (absolute_area_width / 2) ) / currentImgSize.width) / difRatio).toFixed(6));
+	        let yolo_y = parseFloat((( (global_rectangle_start.y - (absolute_area_height / 2) ) / currentImgSize.height) / difRatio).toFixed(6));
+
+	        console.log(0, yolo_x, yolo_y, area_width, area_height);
+
 
 
         	global_imgArea.push({
-        		'p1': global_rectangle_start,
-        		'p2': global_rectangle_end,
+        		'label': 'noname',
+        		'x': yolo_x,
+        		'y': yolo_y,
+        		'width': area_width,
+        		'height': area_height,
         		'imgID': currentImageID
         	})
-
-
-        	//DO SOMTHING
-        	console.log('DRAW RECTANGLE, ', global_rectangle_start, global_rectangle_end);
 
 
         	//CLEAR VAR
@@ -104,8 +130,15 @@ function initDraw() {
         for(k in global_imgArea) {
         	
         	if(global_imgArea[k].imgID == currentImageID) {
-        		console.log(global_imgArea[k].p1, global_imgArea[k].p2)
-        		ctx.rect(global_imgArea[k].p1.x, global_imgArea[k].p1.y, 150, 100);	
+        		//console.log(global_imgArea[k].p1, global_imgArea[k].p2)
+
+        		x = global_imgArea[k].x * img_width;
+        		y = global_imgArea[k].y * img_height;
+
+        		width = global_imgArea[k].width * img_width;
+        		height = global_imgArea[k].height * img_height;
+
+        		ctx.rect( (x + (width/2) ) , (y + (height/2)), width, height);	
         	} else {
         		console.log('NOOO');
         	}
@@ -116,6 +149,36 @@ function initDraw() {
         ctx.stroke();
 
     }, 100);
+
+
+    // PIXEL VERSION
+    /*setInterval(function(){
+
+        let img_height = $('.image-viewer img').height();
+        let img_width = $('.image-viewer img').width();
+
+        ctx.canvas.height = img_height;
+        ctx.canvas.width = img_width;
+
+        for(k in global_imgArea) {
+        	
+        	if(global_imgArea[k].imgID == currentImageID) {
+        		//console.log(global_imgArea[k].p1, global_imgArea[k].p2)
+
+        		let calculatedP2x = global_imgArea[k].p2.x - global_imgArea[k].p1.x;
+        		let calculatedP2y = global_imgArea[k].p2.y - global_imgArea[k].p1.y;
+
+        		ctx.rect(global_imgArea[k].p1.x, global_imgArea[k].p1.y, 100, 100);	
+        	} else {
+        		console.log('NOOO');
+        	}
+
+        	
+        }
+
+        ctx.stroke();
+
+    }, 100);*/
 
 
 }
@@ -159,7 +222,8 @@ $(document).on("click", '.panel_filelist li', function(event) {
 	let img = global_imgInfo[imgID];
 	$('.right-panel .image-viewer img').attr("src" , img.path);
 
-	currentImgSize = { width:$('.right-panel .image-viewer img').width(), height:$('.right-panel .image-viewer img').height() }
+	var dimensions = sizeOf(img.path);
+	currentImgSize = { width: dimensions.width, height: dimensions.height }
 
 	currentImageID = imgID;
 });

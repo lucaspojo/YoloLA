@@ -34,7 +34,7 @@ hr {
 
 .right-panel {
     width:calc(100% - 280px);
-    background:orange;
+    background:#bdbdbd;
     height: 100%;
     position: fixed;
     top:0;
@@ -152,6 +152,7 @@ h4 {
     bottom: 0;
     background: white;
     text-align: center;
+    background: url(../img/alpha_bg.png);
 }
 
 .right-panel .image-viewer img {
