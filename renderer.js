@@ -35,7 +35,7 @@ function initDraw() {
        .attr('id', 'canvas')
        .text('unsupported browser')
        .appendTo('.image-viewer')
-       .css({'background':'red'});
+       .css({'background':'transparent'});
 
 
 
@@ -126,6 +126,7 @@ function initDraw() {
 
         ctx.canvas.height = img_height;
         ctx.canvas.width = img_width;
+        ctx.strokeStyle = "rgb(0, 255, 0)";
 
         for(k in global_imgArea) {
         	
@@ -149,37 +150,6 @@ function initDraw() {
         ctx.stroke();
 
     }, 100);
-
-
-    // PIXEL VERSION
-    /*setInterval(function(){
-
-        let img_height = $('.image-viewer img').height();
-        let img_width = $('.image-viewer img').width();
-
-        ctx.canvas.height = img_height;
-        ctx.canvas.width = img_width;
-
-        for(k in global_imgArea) {
-        	
-        	if(global_imgArea[k].imgID == currentImageID) {
-        		//console.log(global_imgArea[k].p1, global_imgArea[k].p2)
-
-        		let calculatedP2x = global_imgArea[k].p2.x - global_imgArea[k].p1.x;
-        		let calculatedP2y = global_imgArea[k].p2.y - global_imgArea[k].p1.y;
-
-        		ctx.rect(global_imgArea[k].p1.x, global_imgArea[k].p1.y, 100, 100);	
-        	} else {
-        		console.log('NOOO');
-        	}
-
-        	
-        }
-
-        ctx.stroke();
-
-    }, 100);*/
-
 
 }
 

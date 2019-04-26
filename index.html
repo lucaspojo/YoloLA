@@ -27,6 +27,8 @@
 
     <div class="right-panel">
 
+        <div class="help-msg">CLICK SECOND POINT</div>
+
         <div class="image-viewer">
             <img src=""></img>
             
@@ -128,7 +130,7 @@
 
 
         // SHOW CROSSHAIR
-        $(".image-viewer img").mousemove(function(e) {
+        $(".image-viewer #canvas").mousemove(function(e) {
             var parentOffset = $('.image-viewer').parent().offset();
             var mx = e.pageX - parentOffset.left - 2;
             var my = e.pageY - parentOffset.top - 2;
@@ -137,7 +139,7 @@
             var offset = $(this).offset();
             var mouse_mx = parseInt(e.pageX - offset.left);
             var mouse_my = parseInt(e.pageY - offset.top);
-            //console.log(mouse_mx, mouse_mx)
+            console.log(mouse_mx, mouse_mx)
         });
 
 
