@@ -21,6 +21,7 @@ let global_imageList = null;
 let global_imgInfo = [];
 let currentImgSize = null;
 let currentImageID = null;
+let currentLabelID = null;
 
 let global_imgArea = [];
 
@@ -64,6 +65,34 @@ function initDraw() {
     let global_rectangle_start = null;
     let global_rectangle_end = null;
 
+
+
+    // CANCEL 
+	document.addEventListener("keydown", event => {
+		if(event.key == "Escape") {
+
+			global_rectangle_start = null;
+    		global_rectangle_end = null;
+    		$('.help-msg').html("CLICK FIRST POINT");
+    		$('.label_input_box').hide();
+    		$('.hider').hide();
+
+    		$('#y-line').show();
+    		$('#x-line').show();
+
+    		for(k in global_imgArea) {
+	        	
+	        	if(global_imgArea[k].labelID == currentLabelID) {
+	        		global_imgArea[k] = null;
+	        		delete global_imgArea[k];
+	        	}
+	        }
+
+		}
+	});
+
+
+
     canvas.onclick = function (e) {
 
     	let img_height = $('.image-viewer img').height();
@@ -82,12 +111,10 @@ function initDraw() {
 
         if(global_rectangle_start == null) {
         	global_rectangle_start = { x:mouse_mx, y:mouse_my };
+        	$('.help-msg').html("CLICK SECOND POINT");
         } else {
+
         	global_rectangle_end = { x:mouse_mx, y:mouse_my };
-
-        	
-
-        	console.log(difRatio);
 
         	let absolute_area_width = global_rectangle_end.x - global_rectangle_start.x;
 	        let absolute_area_height = global_rectangle_end.y - global_rectangle_start.y;
@@ -98,8 +125,7 @@ function initDraw() {
 	        let yolo_x = parseFloat((( (global_rectangle_start.x - (absolute_area_width / 2) ) / currentImgSize.width) / difRatio).toFixed(6));
 	        let yolo_y = parseFloat((( (global_rectangle_start.y - (absolute_area_height / 2) ) / currentImgSize.height) / difRatio).toFixed(6));
 
-	        console.log(0, yolo_x, yolo_y, area_width, area_height);
-
+	        let currentLabelID = makeid(20); 
 
 
         	global_imgArea.push({
@@ -108,8 +134,20 @@ function initDraw() {
         		'y': yolo_y,
         		'width': area_width,
         		'height': area_height,
-        		'imgID': currentImageID
+        		'imgID': currentImageID,
+        		'labelID': tmpLabelID
         	})
+
+        	// SHOW LABEL INPUT BOX
+    		$('.label_input_box').show();
+    		$('.label_input_box input').focus();
+
+    		// BLOCK ANY OTHER CLICK IN IMG VIEWER
+    		$('.hider').show();
+
+    		// HIDE CROSS
+    		$('#y-line').hide();
+    		$('#x-line').hide();
 
 
         	//CLEAR VAR
@@ -143,8 +181,6 @@ function initDraw() {
         	} else {
         		console.log('NOOO');
         	}
-
-        	
         }
 
         ctx.stroke();
@@ -197,3 +233,5 @@ $(document).on("click", '.panel_filelist li', function(event) {
 
 	currentImageID = imgID;
 });
+
+

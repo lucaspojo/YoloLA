@@ -166,6 +166,7 @@ h4 {
     height: 1px;
     background:rgb(255, 0, 247);
     z-index: 5000;
+    pointer-events:none;
 }
 
 #y-line {
@@ -175,6 +176,7 @@ h4 {
     background:rgb(255, 0, 247);
     z-index: 5000;
     top: 0;
+    pointer-events:none;
 }
 
 #canvas {
@@ -201,6 +203,53 @@ h4 {
 }
 
 
+.label_input_box {
+    position: absolute;
+    left: calc(50% - 115px);
+    top: 9px;
+    z-index: 8100;
+    width: 230px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.69);
+    background: #202020;
+    display: none;
+}
+
+.label_input_box input {
+    width: calc(100% - 8px);
+    border: none;
+    border-bottom: solid 1px #288edf;
+    color: #FFF;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.label_input_box ul {
+
+}
+
+.label_input_box ul li {
+    color: #FFF;
+    font-size: 15px;
+    background: rgba(0, 0, 0, 0.17);
+    margin-bottom: 2px;
+    padding-left: 6px;
+    cursor: pointer;
+}
+.label_input_box ul li:hover {
+    background: #288edf;
+    color: black;
+    font-weight: bolder;
+}
+
+.hider {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.5;
+    z-index: 7000;
+    display: none;
+}
 
 /* SCROLL CUSTOM*/
 ::-webkit-scrollbar-track {

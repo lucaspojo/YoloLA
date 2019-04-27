@@ -10,6 +10,18 @@
   </head>
   <body>
 
+    <div class="hider"></div>
+
+    <div class="label_input_box">
+        <input placeholder="[Label Name]">
+        <ul>
+            <li>Label1</li>
+            <li>Label2</li>
+            <li>Label3</li>
+            <li>Label4</li>
+        </ul>
+    </div>
+
     <div class="left-panel">
         <div class="logo"> <img src="src/img/select.svg"/> <span>YoloLA</span></div>
         <div class="tool-bar">
@@ -132,8 +144,8 @@
         // SHOW CROSSHAIR
         $(".image-viewer #canvas").mousemove(function(e) {
             var parentOffset = $('.image-viewer').parent().offset();
-            var mx = e.pageX - parentOffset.left - 2;
-            var my = e.pageY - parentOffset.top - 2;
+            var mx = e.pageX - parentOffset.left;
+            var my = e.pageY - parentOffset.top;
             $('#x-line').css({'top':my+'px'});
             $('#y-line').css({'left':mx+'px'});
             var offset = $(this).offset();
