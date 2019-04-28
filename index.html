@@ -15,10 +15,6 @@
     <div class="label_input_box">
         <input placeholder="[Label Name]">
         <ul>
-            <li>Label1</li>
-            <li>Label2</li>
-            <li>Label3</li>
-            <li>Label4</li>
         </ul>
     </div>
 
@@ -135,8 +131,6 @@
             let img_pos = $('.image-viewer img').position();
             let img_mtop = parseFloat($('.image-viewer img').css("margin-top"));
 
-            console.log(img_mtop);
-
             $('#canvas').css({ 'width':img_width+'px', 'height':img_height+'px', 'top':img_mtop+'px', 'left':img_pos.left+'px'})
         }
 
@@ -151,51 +145,11 @@
             var offset = $(this).offset();
             var mouse_mx = parseInt(e.pageX - offset.left);
             var mouse_my = parseInt(e.pageY - offset.top);
-            console.log(mouse_mx, mouse_mx)
         });
 
 
         let global_rectangle_start = null;
         let global_rectangle_end = null;
-
-        // DRAW RECTANGLE
-        /*$(document).on("click", '.image-viewer img', function(e) { 
-
-            // VRAIS POSITION A ENREGISTRE
-            var offset = $(this).offset();
-            var mouse_mx = parseInt(e.pageX - offset.left);
-            var mouse_my = parseInt(e.pageY - offset.top);
-            
-
-            var parentOffset = $('.image-viewer img').parent().offset();
-            var mx = e.pageX - parentOffset.left;
-            var my = e.pageY - parentOffset.top;
-
-            if(global_rectangle_start == null) {
-                global_rectangle_start = {x:mx, y:my}
-            } else {
-                global_rectangle_end = {x:mx, y:my};
-
-                // traitement des position
-                console.log(global_rectangle_start, global_rectangle_end);
-                drawRectangle(global_rectangle_start, global_rectangle_end);
-
-                // Mise a zero 
-                global_rectangle_start = null;
-                global_rectangle_end = null;
-            }
-
-            if(global_rectangle_start == null) {
-                global_rectangle_start = {x:mouse_mx, y:mouse_my}
-            }
-
-            console.log(mouse_mx, mouse_my);
-
-        });*/
-
-
-
-
 
       });
     </script>

@@ -39,6 +39,7 @@ hr {
     position: fixed;
     top:0;
     right:0;
+    cursor: crosshair;
 }
 
 .left-panel .logo {
@@ -205,7 +206,7 @@ h4 {
 
 .label_input_box {
     position: absolute;
-    left: calc(50% - 115px);
+    left: 50%;
     top: 9px;
     z-index: 8100;
     width: 230px;

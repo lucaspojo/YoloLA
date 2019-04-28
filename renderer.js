@@ -22,6 +22,8 @@ let global_imgInfo = [];
 let currentImgSize = null;
 let currentImageID = null;
 let currentLabelID = null;
+let global_labelList = [];
+let lastLabel = null;
 
 let global_imgArea = [];
 
@@ -45,8 +47,6 @@ function initDraw() {
         var offset = $('#canvas').offset();
         var mouse_mx = parseInt(e.pageX - offset.left);
         var mouse_my = parseInt(e.pageY - offset.top);
-
-        //console.log(mouse_mx, mouse_my);
         
         ctx.beginPath();
         ctx.arc(mouse_mx, mouse_my, 10, 0, 2 * Math.PI);
@@ -83,9 +83,11 @@ function initDraw() {
     		for(k in global_imgArea) {
 	        	
 	        	if(global_imgArea[k].labelID == currentLabelID) {
+	        		console.log('REMOVE');
 	        		global_imgArea[k] = null;
 	        		delete global_imgArea[k];
 	        	}
+
 	        }
 
 		}
@@ -104,11 +106,6 @@ function initDraw() {
         var mouse_mx = parseInt(e.pageX - offset.left);
         var mouse_my = parseInt(e.pageY - offset.top);
 
-
-
-
-
-
         if(global_rectangle_start == null) {
         	global_rectangle_start = { x:mouse_mx, y:mouse_my };
         	$('.help-msg').html("CLICK SECOND POINT");
@@ -125,7 +122,7 @@ function initDraw() {
 	        let yolo_x = parseFloat((( (global_rectangle_start.x - (absolute_area_width / 2) ) / currentImgSize.width) / difRatio).toFixed(6));
 	        let yolo_y = parseFloat((( (global_rectangle_start.y - (absolute_area_height / 2) ) / currentImgSize.height) / difRatio).toFixed(6));
 
-	        let currentLabelID = makeid(20); 
+	        currentLabelID = makeid(20); 
 
 
         	global_imgArea.push({
@@ -135,12 +132,13 @@ function initDraw() {
         		'width': area_width,
         		'height': area_height,
         		'imgID': currentImageID,
-        		'labelID': tmpLabelID
+        		'labelID': currentLabelID
         	})
 
         	// SHOW LABEL INPUT BOX
     		$('.label_input_box').show();
     		$('.label_input_box input').focus();
+    		$('.label_input_box input').select();
 
     		// BLOCK ANY OTHER CLICK IN IMG VIEWER
     		$('.hider').show();
@@ -156,7 +154,7 @@ function initDraw() {
         }
     }
 
-
+    // DRAW RECTANGLES
     setInterval(function(){
 
         let img_height = $('.image-viewer img').height();
@@ -177,9 +175,21 @@ function initDraw() {
         		width = global_imgArea[k].width * img_width;
         		height = global_imgArea[k].height * img_height;
 
+        		let letterLiength = global_imgArea[k].label.length;
+
+
         		ctx.rect( (x + (width/2) ) , (y + (height/2)), width, height);	
-        	} else {
-        		console.log('NOOO');
+
+
+
+
+        		ctx.fillStyle = "rgb(0, 255, 0)";
+        		ctx.fillRect( (x + (width/2)) , (y + (height/2)) - 30, (letterLiength * 13) + 10, 30);	
+
+
+        		ctx.font = "18px monospace";
+        		ctx.fillStyle = "black";
+				ctx.fillText(global_imgArea[k].label, (x + (width/2)) + 10 , (y + (height/2)) - 8 );
         	}
         }
 
@@ -222,6 +232,7 @@ $(document).on("click", '#btn-load-img', function(event) {
 	$( "#input_load-img" ).trigger( "click" );
 });
 
+
 // SELECT IMG IN LIST
 $(document).on("click", '.panel_filelist li', function(event) { 
 	let imgID = $( this ).attr( "id" );
@@ -234,4 +245,45 @@ $(document).on("click", '.panel_filelist li', function(event) {
 	currentImageID = imgID;
 });
 
+
+// SET LABEL 
+$(document).on('keypress',function(e) {
+    if(e.which == 13) {
+
+        let labelName = $('.label_input_box input').val();
+        lastLabel = labelName;
+        
+        if(global_labelList[0] != null) {
+
+        	let present = false;
+
+	        for(k in global_labelList) {
+	        	if(global_labelList[k] == labelName) {
+	        		present = true;
+	        	}
+	        }
+
+	        if(present == false) {
+	        	global_labelList.push(labelName);
+	        }
+
+	    } else {
+	    	global_labelList.push(labelName);
+	    }
+
+
+        for(k in global_imgArea) {
+        	if(global_imgArea[k].labelID == currentLabelID) {
+        		global_imgArea[k].label = labelName;
+        	}
+        }
+
+        $('.label_input_box input').val(labelName);
+        $('.label_input_box').hide();
+        $('.hider').hide();
+        $('#x-line').show();
+        $('#y-line').show();
+
+    }
+});
 
